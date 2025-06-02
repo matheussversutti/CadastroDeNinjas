@@ -1,6 +1,9 @@
-package dev.jaxa10x.CadastroDeNinjas;
+package dev.jaxa10x.CadastroDeNinjas.Ninjas.Model;
 
+import dev.jaxa10x.CadastroDeNinjas.Missoes.Model.MissoesModel;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 //Entity ele transforma a classe em uma tabela no banco de dados
 // JPA = Java Persistence API
@@ -9,12 +12,17 @@ import jakarta.persistence.*;
 public class NinjaModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Aqui vou passtar uma estrategia de como eu vou gerar o ID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Aqui vou passar uma estrategia de como eu vou gerar o ID)
      private Long id;
 
      private String nome;
      private String email;
      private int idade;
+
+     //Muitos ninjas pra uma missão
+     @ManyToOne
+     @JoinColumn(name = "missoes_id") //Chave estrangeira
+     private MissoesModel missoes;
 
     public NinjaModel() {
     }
@@ -24,6 +32,14 @@ public class NinjaModel {
         this.email = email;
         this.idade = idade;
     }
+
+    //Sobrecarga de construtor
+    public NinjaModel(String nome, String email, int idade, MissoesModel missoes) {
+        this (nome, email, idade);
+        this.missoes = missoes;
+    }
+
+
 
     public String getNome() {
         return nome;
